@@ -1,6 +1,10 @@
 pipeline {
     agent any
     
+    tools {
+        nodejs 'NodeJS-installation'
+    }
+    
     stages {
         stage('Checkout') {
             steps {
@@ -9,25 +13,25 @@ pipeline {
             }
         }
         
-        stage('Check Node.js') {
+        stage('Verify Node.js') {
             steps {
-                echo 'Checking if Node.js is available...'
-                sh 'node --version || echo "Node.js not found"'
-                sh 'npm --version || echo "npm not found"'
+                echo 'Verifying Node.js installation...'
+                bat 'where node'
+                bat 'node -v'
             }
         }
         
         stage('Install Dependencies') {
             steps {
                 echo 'Installing npm dependencies...'
-                sh 'npm ci || npm install || echo "Failed to install dependencies"'
+                bat 'npm ci'
             }
         }
         
         stage('Run Tests') {
             steps {
                 echo 'Running tests...'
-                sh 'npm test || echo "Tests failed or npm not available"'
+                bat 'npm test'
             }
         }
     }
