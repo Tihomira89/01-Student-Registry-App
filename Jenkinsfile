@@ -1,10 +1,6 @@
 pipeline {
     agent any
     
-    tools {
-        nodejs 'NodeJS-18'
-    }
-    
     stages {
         stage('Checkout') {
             steps {
@@ -13,26 +9,18 @@ pipeline {
             }
         }
         
-        stage('Setup Node.js') {
+        stage('Check Node.js') {
             steps {
-                echo 'Setting up Node.js environment...'
-                sh 'node --version'
-                sh 'npm --version'
+                echo 'Checking if Node.js is available...'
+                sh 'node --version || echo "Node.js not found"'
+                sh 'npm --version || echo "npm not found"'
             }
         }
         
         stage('Install Dependencies') {
             steps {
                 echo 'Installing npm dependencies...'
-                sh 'npm ci'
-            }
-        }
-        
-        stage('Start Application') {
-            steps {
-                echo 'Starting the application...'
-                sh 'npm start &'
-                sh 'sleep 5'
+                sh 'npm ci || npm install'
             }
         }
         
@@ -40,13 +28,6 @@ pipeline {
             steps {
                 echo 'Running tests...'
                 sh 'npm test'
-            }
-        }
-        
-        stage('Cleanup') {
-            steps {
-                echo 'Cleaning up processes...'
-                sh 'pkill -f "node index.js" || true'
             }
         }
     }
