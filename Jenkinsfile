@@ -1,8 +1,8 @@
 pipeline {
     agent any
     
-    environment {
-        NODE_VERSION = '18'
+    tools {
+        nodejs 'NodeJS-18'
     }
     
     stages {
@@ -16,38 +16,30 @@ pipeline {
         stage('Setup Node.js') {
             steps {
                 echo 'Setting up Node.js environment...'
-                nodejs(nodeJSInstallationName: 'NodeJS-18') {
-                    sh 'node --version'
-                    sh 'npm --version'
-                }
+                sh 'node --version'
+                sh 'npm --version'
             }
         }
         
         stage('Install Dependencies') {
             steps {
                 echo 'Installing npm dependencies...'
-                nodejs(nodeJSInstallationName: 'NodeJS-18') {
-                    sh 'npm ci'
-                }
+                sh 'npm ci'
             }
         }
         
         stage('Start Application') {
             steps {
                 echo 'Starting the application...'
-                nodejs(nodeJSInstallationName: 'NodeJS-18') {
-                    sh 'npm start &'
-                    sh 'sleep 5'
-                }
+                sh 'npm start &'
+                sh 'sleep 5'
             }
         }
         
         stage('Run Tests') {
             steps {
                 echo 'Running tests...'
-                nodejs(nodeJSInstallationName: 'NodeJS-18') {
-                    sh 'npm test'
-                }
+                sh 'npm test'
             }
         }
         
