@@ -13,11 +13,21 @@ pipeline {
             }
         }
         
-        stage('Verify Node.js') {
+        stage('Debug Environment') {
             steps {
-                echo 'Verifying Node.js installation...'
+                echo '=== Debugging Environment ==='
+                bat 'echo Current directory:'
+                bat 'cd'
+                bat 'echo PATH:'
+                bat 'echo %PATH%'
+                bat 'echo Looking for node.exe:'
                 bat 'where node'
-                bat 'node -v'
+                bat 'echo Looking for npm:'
+                bat 'where npm'
+                bat 'echo Node.js version:'
+                bat 'node --version'
+                bat 'echo NPM version:'
+                bat 'npm --version'
             }
         }
         
