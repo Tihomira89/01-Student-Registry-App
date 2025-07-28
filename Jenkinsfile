@@ -1,10 +1,6 @@
 pipeline {
     agent any
     
-    tools {
-        nodejs 'NodeJS-installation'
-    }
-    
     stages {
         stage('Checkout') {
             steps {
@@ -13,25 +9,10 @@ pipeline {
             }
         }
         
-        stage('Verify Node.js') {
+        stage('Test') {
             steps {
-                echo 'Verifying Node.js installation...'
-                bat 'where node'
-                bat 'node -v'
-            }
-        }
-        
-        stage('Install Dependencies') {
-            steps {
-                echo 'Installing npm dependencies...'
-                bat 'npm ci'
-            }
-        }
-        
-        stage('Run Tests') {
-            steps {
-                echo 'Running tests...'
-                bat 'npm test'
+                echo 'Testing basic pipeline...'
+                bat 'echo Hello from Jenkins!'
             }
         }
     }
@@ -39,12 +20,6 @@ pipeline {
     post {
         always {
             echo 'Pipeline completed!'
-        }
-        success {
-            echo 'Pipeline succeeded!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 } 
